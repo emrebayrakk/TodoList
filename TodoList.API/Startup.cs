@@ -11,6 +11,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TodoList.Business.Abstract;
+using TodoList.Business.Concrete;
+using TodoList.Core.DependencyResolver;
+using TodoList.Core.Extensions;
+using TodoList.Core.Utilities.IoC;
 
 namespace TodoList.API
 {
@@ -32,6 +37,10 @@ namespace TodoList.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TodoList.API", Version = "v1" });
             });
+            services.AddDependencyResolvers(new ICoreModule[]
+            {
+                new CoreModule()
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,6 +56,7 @@ namespace TodoList.API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

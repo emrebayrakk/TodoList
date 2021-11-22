@@ -17,7 +17,7 @@ namespace TodoList.Business.Concrete
     public class NoteManager : INoteService
     {
         private readonly INoteDal _noteDal;
-
+        private readonly DateTime _dayNow = Convert.ToDateTime(DateTime.Now);
         public NoteManager(INoteDal noteDal)
         {
             _noteDal = noteDal;
@@ -27,11 +27,14 @@ namespace TodoList.Business.Concrete
             return new SuccessDataResult<List<Note>>(_noteDal.GetAll().ToList());
         }
 
-        public IDataResult<List<Note>> GetAllDayNote(DateTime dateTime)
+        public IDataResult<List<Note>> GetAllDayNote()
         {
-            var result = _noteDal.GetAll(g => g.TaskEndDate == DateTime.Now || g.TaskStartDate == DateTime.Now).ToList();
+            var addDays = Convert.ToDateTime(DateTime.Now.AddDays(1));
+            //var dayNow = Convert.ToDateTime(DateTime.Now);
+            var result = _noteDal.GetAll(g => g.TaskEndDate <= addDays && g.TaskEndDate<=_dayNow)
+               .ToList();
 
-            if (result.Count == 0)
+            if (result.Count==0)
             {
                 return new ErrorDataResult<List<Note>>("günlük görev bulunamadı");
             }
@@ -39,12 +42,13 @@ namespace TodoList.Business.Concrete
             return new SuccessDataResult<List<Note>>(result);
         }
 
-        public IDataResult<List<Note>> GetAllWeekNote(DateTime dateTime)
+        public IDataResult<List<Note>> GetAllWeekNote()
         {
-            var result = _noteDal.GetAll(g =>
-                g.TaskEndDate == DateTime.Now.AddDays(7) || g.TaskStartDate == DateTime.Now.AddDays(-7)).ToList();
+            var addWeeks = Convert.ToDateTime(DateTime.Now.AddDays(7));
+            //var dayNow = Convert.ToDateTime(DateTime.Now);
+            var result = _noteDal.GetAll(g => g.TaskStartDate <= _dayNow && g.TaskEndDate >= _dayNow && g.TaskEndDate<=addWeeks).ToList();
 
-            if (result.Count==0)
+            if (result.Count == 0)
             {
                 return new ErrorDataResult<List<Note>>("haftalık görev bulunamadı");
             }
@@ -52,10 +56,12 @@ namespace TodoList.Business.Concrete
             return new SuccessDataResult<List<Note>>(result);
         }
 
-        public IDataResult<List<Note>> GetAllMonthNote(DateTime dateTime)
+        public IDataResult<List<Note>> GetAllMonthNote()
         {
-            var result = _noteDal.GetAll(g =>
-                g.TaskEndDate == DateTime.Now.AddMonths(1) || g.TaskStartDate == DateTime.Now.AddMonths(-1)).ToList();
+            var addMonths = Convert.ToDateTime(DateTime.Now.AddDays(30));
+            var dayWeeks = Convert.ToDateTime(DateTime.Now.AddDays(7));
+            //var dayNow = Convert.ToDateTime(DateTime.Now);
+            var result = _noteDal.GetAll( g=> g.TaskStartDate <= _dayNow && g.TaskEndDate>=_dayNow && g.TaskEndDate<=addMonths && g.TaskEndDate> dayWeeks).ToList();
 
             if (result.Count == 0)
             {
@@ -72,13 +78,31 @@ namespace TodoList.Business.Concrete
 
         public IDataResult<Note> GetById(int noteId)
         {
-            throw new NotImplementedException();
+            var result = _noteDal.Get(p => p.TaskId == noteId);
+            if (result==null)
+            {
+                return new ErrorDataResult<Note>("geçerli id giriniz");
+            }
+            return new SuccessDataResult<Note>(result);
+
         }
 
         public IResult AddNote(Note note)
         {
             _noteDal.Add(note);
             return new SuccessResult("görev eklendi");
+        }
+
+        public IResult DeleteNote(Note note)
+        {
+            _noteDal.Delete(note);
+            return new SuccessResult("görev silindi");
+        }
+
+        public IResult UpdateNote(Note note)
+        {
+            _noteDal.Update(note);
+            return new SuccessResult("görev güncellendi");
         }
     }
 }

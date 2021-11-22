@@ -31,9 +31,9 @@ namespace TodoList.API.Controllers
             return BadRequest(result.Message);
         }
         [HttpGet("getlistday")]
-        public IActionResult GetDayList(DateTime dateTime)
+        public IActionResult GetDayList()
         {
-            var result = _noteService.GetAllDayNote(dateTime);
+            var result = _noteService.GetAllDayNote();
             if (result.Success)
             {
                 return Ok(result.Data);
@@ -42,9 +42,9 @@ namespace TodoList.API.Controllers
             return BadRequest(result.Message);
         }
         [HttpGet("getlistweek")]
-        public IActionResult GetWeekList(DateTime dateTime)
+        public IActionResult GetWeekList()
         {
-            var result = _noteService.GetAllDayNote(dateTime);
+            var result = _noteService.GetAllWeekNote();
             if (result.Success)
             {
                 return Ok(result.Data);
@@ -53,10 +53,10 @@ namespace TodoList.API.Controllers
             return BadRequest(result.Message);
         }
         [HttpGet("getlistmonth")]
-        public IActionResult GetMonthList(DateTime dateTime)
+        public IActionResult GetMonthList()
         {
-            var result = _noteService.GetAllDayNote(dateTime);
-            if (result.Success)
+            var result = _noteService.GetAllMonthNote();
+            if (result.Success)           
             {
                 return Ok(result.Data);
             }
@@ -85,6 +85,30 @@ namespace TodoList.API.Controllers
             }
             return BadRequest(result.Message);
                 
+        }
+
+        [HttpPost("delete")]
+        public IActionResult Delete(Note note)
+        {
+            var result = _noteService.DeleteNote(note);
+            if (result.Success)
+            {
+                return Ok(result.Message);
+            }
+
+            return BadRequest(result.Message);
+        }
+
+        [HttpPost("updated")]
+        public IActionResult Update(Note note)
+        {
+            var result = _noteService.UpdateNote(note);
+            if (result.Success)
+            {
+                return Ok(result.Message);
+            }
+
+            return BadRequest(result.Message);
         }
     }
 }

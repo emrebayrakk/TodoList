@@ -21,7 +21,7 @@ namespace TodoList.Business.DependencyResolvers.Autofac
             builder.RegisterType<NoteManager>().As<INoteService>();
             builder.RegisterType<EfNoteDal>().As<INoteDal>();
 
-            //builder.RegisterType<UserManager>().As<IUserService>();
+            builder.RegisterType<UserManager>().As<IUserService>();
             builder.RegisterType<EfUserDal>().As<IUserDal>();
         }
     }

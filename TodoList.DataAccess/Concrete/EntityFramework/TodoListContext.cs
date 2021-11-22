@@ -10,16 +10,13 @@ namespace TodoList.DataAccess.Concrete.EntityFramework
 {
     public class TodoListContext : DbContext
     {
-        public class NorthwindContext : DbContext
-        {
-            protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             {
-                optionsBuilder.UseSqlServer(
-                    @"Server=(localdb)\MSSQLLocalDB;Database=TodoListDb;Integrated Security=True");
+                optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=TodoListDb;Integrated Security=True");
             }
 
             public DbSet<Note> Notes { get; set; }
             public DbSet<User> Users { get; set; }
-        }
+        
     }
 }

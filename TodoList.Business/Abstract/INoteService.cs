@@ -14,13 +14,16 @@ namespace TodoList.Business.Abstract
     {
         IDataResult<List<Note>> GetAll();
 
-        IDataResult<List<Note>> GetAllDayNote(DateTime dateTime);
+        IDataResult<List<Note>> GetAllDayNote();
 
-        IDataResult<List<Note>> GetAllWeekNote(DateTime dateTime);
-        IDataResult<List<Note>> GetAllMonthNote(DateTime dateTime);
+        IDataResult<List<Note>> GetAllWeekNote();
+        IDataResult<List<Note>> GetAllMonthNote();
 
         IDataResult<List<NoteDetailDto>> GetNoteDetails();
         IDataResult<Note> GetById(int noteId);
         IResult AddNote(Note note);
+        IResult DeleteNote(Note note);
+        IResult UpdateNote(Note note);
+
     }
 }

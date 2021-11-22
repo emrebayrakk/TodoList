@@ -16,6 +16,7 @@ using TodoList.Business.Concrete;
 using TodoList.Core.DependencyResolver;
 using TodoList.Core.Extensions;
 using TodoList.Core.Utilities.IoC;
+using TodoList.DataAccess.Concrete.EntityFramework;
 
 namespace TodoList.API
 {
@@ -41,6 +42,7 @@ namespace TodoList.API
             {
                 new CoreModule()
             });
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -11,8 +11,8 @@ namespace TodoList.Business.Abstract
     public interface IUserService
     {
         IDataResult<List<User>> GetAll();
-        IResult Add(User user);
-        IResult Delete(User user);
-        IResult Update(User user);
+        IResult AddUser(User user);
+        IResult DeleteUser(User user);
+        IResult UpdateUser(User user);
     }
 }

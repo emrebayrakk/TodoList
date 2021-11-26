@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using TodoList.Business.Abstract;
-using TodoList.Core.Business;
 using TodoList.Core.Utilities.Results.Abstract;
 using TodoList.Core.Utilities.Results.Concrete;
 using TodoList.DataAccess.Abstract;
@@ -73,7 +69,7 @@ namespace TodoList.Business.Concrete
 
         public IDataResult<List<NoteDetailDto>> GetNoteDetails()
         {
-            throw new NotImplementedException();
+            return new SuccessDataResult<List<NoteDetailDto>>(_noteDal.GetNoteDetails(),"details");
         }
 
         public IDataResult<Note> GetById(int noteId)

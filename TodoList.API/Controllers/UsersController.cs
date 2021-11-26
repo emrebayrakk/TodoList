@@ -1,13 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TodoList.Business.Abstract;
 using TodoList.Entities.Concrete;
+using TodoList.Entities.DTOs;
 
 namespace TodoList.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -18,6 +21,7 @@ namespace TodoList.API.Controllers
         {
             _userService = userService;
         }
+        [AllowAnonymous]
         [HttpGet("getall")]
         public IActionResult GetAllUser()
         {
@@ -61,6 +65,17 @@ namespace TodoList.API.Controllers
                 return Ok(result.Message);
             }
             return BadRequest(result.Message);
+        }
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult Authenticate([FromBody] UserForLoginDto userForLoginDto)
+        {
+            var result = _userService.Authenticate(userForLoginDto);
+            if (result != null)
+                return Ok(result);
+            return BadRequest();
+
         }
 
     }

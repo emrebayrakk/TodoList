@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using TodoList.Entities.Concrete;
 
 namespace TodoList.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class NotesController : ControllerBase
@@ -29,6 +31,18 @@ namespace TodoList.API.Controllers
             }
 
             return BadRequest(result.Message);
+        }
+        [HttpGet("getdetailsall")]
+        public IActionResult GetDetailsAll()
+        {
+            var result = _noteService.GetNoteDetails();
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+
+            return BadRequest(result.Message);
+
         }
         [HttpGet("getlistday")]
         public IActionResult GetDayList()
